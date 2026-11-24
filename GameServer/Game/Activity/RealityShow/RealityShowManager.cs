@@ -142,6 +142,8 @@ public class RealityShowManager(PlayerInstance player) : BasePlayerComponent(pla
         if (!isFirstStage && record?.IsFirstStageFinished != true) return (Retcode.RetChallengeNotFinish, null);
         if (!GameData.StageConfigData.TryGetValue(isFirstStage ? challenge.StageId1 : challenge.StageId2, out var stage))
             return (Retcode.RetStageConfigNotExist, null);
+        if (!isFirstStage && avatarList.Count == 0 && record is { Lineup.Count: > 0 })
+            avatarList = record.Lineup.Select(avatar => ((AvatarType)avatar.AvatarType, avatar.Id)).ToList();
         if (avatarList.Count == 0) return (Retcode.RetChallengeLineupEmpty, null);
         if (avatarList.Count > LineupSlotCount) return (Retcode.RetReqParaInvalid, null);
 

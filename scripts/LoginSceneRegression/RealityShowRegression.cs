@@ -204,6 +204,13 @@ internal static class RealityShowRegression
             check("buff level 2 completes challenge 2's buff quest and not challenge 1's",
                 Finished(6091005) && !Finished(6091001));
 
+            var continued = await Start(StartReq(2, false, Own));
+            check("continuing without an explicit lineup reuses the saved team in the final battle and reply",
+                continued is { Retcode: 0, BattleInfo.StageId: 4320136 } &&
+                continued.KHBJOAHCCCE.SequenceEqual(warmUpReq.AvatarList) &&
+                continued.BattleInfo.BattleAvatarList.Select(a => a.Id).SequenceEqual(warmUpReq.AvatarList.Select(a => a.Id)));
+            if (player.BattleInstance != null) await End(BattleEndStatus.BattleEndLose);
+
             var finalReq = StartReq(2, false, Own, 1407, 1413);
             var final = await Start(finalReq);
             var finalBuffs = final.BattleInfo?.BuffList.Select(b => b.Id).ToHashSet() ?? [];
