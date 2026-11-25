@@ -36,7 +36,7 @@ public class PacketRealityShowStartChallengeScRsp : BasePacket
         if (retcode == Retcode.RetSucc && battle != null)
         {
             proto.NEMJKLMIJOL = manager.ToChallengeProto((int)req.ChallengeId);
-            proto.KHBJOAHCCCE.AddRange(req.AvatarList);
+            proto.KHBJOAHCCCE.AddRange(proto.NEMJKLMIJOL.KHBJOAHCCCE);
             proto.BattleInfo = battle.ToProto();
         }
 
